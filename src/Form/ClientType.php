@@ -29,7 +29,7 @@ class ClientType extends AbstractType
             ->add('nom', TextType::class, ['label' => 'Nom :'])
             ->add('prenom', TextType::class, ['label' => 'Prénom :'])
             ->add('societe', TextType::class, ['label' => 'Nom société :', 'required' => false,])
-            ->add('siret', NumberType::class, ['label' => 'SIRET :', 'required' => false,])
+            ->add('siret', TextType::class, ['label' => 'SIRET :', 'required' => false,])
             ->add('telephone', TelType::class, ['label' => 'Téléphone :'])
             ->add('mail', EmailType::class, ['label' => 'E-mail :', 'required' => false,])
             ->add('adresse', TextType::class, ['label' => 'Adresse :', 'required' => false,])
