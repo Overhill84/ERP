@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{client.nom}} {{client.prenom}}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="col-md-12 mx-auto">
+        <div class="jumbotron text-center">
+            {% if client.societe is empty %}
+            <div class="col-md-12">
+                <h3>{{client.nom}} {{client.prenom}}</h3>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6"><b>Téléphone : </b>{{client.telephone}}</div>
+                <div class="col-md-6"><b>E-Mail : </b>{{client.mail}}</div>
+            </div>
+
+            {% else %}
+            <div class="col-md-12">
+                <h3>{{client.societe}}</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class=""><b>Nom : </b>{{client.nom}}</div>
+                    <div class="mt-3"><b>Prénom : </b>{{client.prenom}}</div>
+                </div>
+                <div class="col-md-6">
+                    <div class=""><b>Téléphone : </b>{{client.telephone}}</div>
+                    <div class="mt-3"><b>E-Mail : </b>{{client.mail}}</div>
+                </div>
+            </div>
+            {% endif %}
+            <div class="accordion mt-5" id="accordionExample">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <h2>Informations complémentaires </h2>
+                    </button>
+                </h2>
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4"><b>Adresse : </b>{{client.adresse}}</div>
+                            <div class="col-md-4"><b>Ville : </b>{{client.ville}}</div>
+                            <div class="col-md-4"><b>Code Postal : </b>{{client.codePostal}}</div>
+                            {% if client.siret is not null %}
+                            <div class="col-md-12 mt-3"><b>SIRET : </b>{{client.siret}}</div>
+                            {% endif %}
+                            <div class="col-md-12 mt-3"><b>Note : </b>
+                                <br>
+                                <p>{{client.note}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mt-3">
+                    <a href="{{path('clients')}}" class="btn btn-info">Retour aux clients</a>
+                    <br>
+                    <a href="{{path('create_devis', {'id':client.id})}}" class="btn btn-primary mt-2">Créer devis</a>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <a href="{{path('update_client', {'id':client.id})}}" class="btn btn-info">Modifier</a>
+                    <br>
+                    <a href="{{path('create_facture', {'id':client.id})}}" class="btn btn-primary mt-2">Créer facture</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">Devis N°</th>
+                            <th scope="col">Total HT</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if devis is empty %}
+                        <tr>
+                            <td>Aucun devis</td>
+                            <td></td>
+                        </tr>
+                        {% else %}
+                        {% for dev in devis %}
+                        <tr>
+                            <th scope="row">{{dev.id}}</th>
+                            <td>{{dev.totalHt}} €</td>
+                            <td><a href="{{path('show_devis', {'id':dev.id})}}" class="btn btn-primary btn-sm">Voir</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">Facture N°</th>
+                            <th scope="col">Total HT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if factures is empty %}
+                        <tr>
+                            <td>Aucune facture</td>
+                            <td></td>
+                        </tr>
+                        {% else %}
+                        {% for fac in factures %}
+                        <tr>
+                            <th scope="row">{{fac.id}}</th>
+                            <td>{{fac.totalHt}} €</td>
+                            <td><a href="{{path('show_facture', {'id':fac.id})}}"
+                                    class="btn btn-primary btn-sm">Voir</a></td>
+                        </tr>
+                        {% endfor %}
+
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+{% endblock %}

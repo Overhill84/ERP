@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle facture{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="col-md-12">
+        <div class="jumbotron row">
+            <div class="col-md-12 text-center">
+                <h2>Facture</h2>
+            </div>
+            <div class="col-md-6">
+                {% if client.societe is defined %}
+                <p>Entreprise : <b>{{client.societe}}</b></p>
+                {% endif %}
+                <p>Client : {{client.nom}} {{client.prenom}}</p>
+                <p>Téléphone : {{client.telephone}}</p>
+            </div>
+            <div class="col-md-6 text-right">
+                {% if client.siret is defined %}
+                <p>SIRET : <b>{{client.siret}}</b></p>
+                {% endif %}
+                <p>Adresse : {{client.adresse}}</p>
+                <p>{{client.codePostal}}, {{client.ville}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <form action="{{path('add_article_facture', {'id':client.id})}}">
+                    <select name="articleSelect" class="articles form-control">
+                        {% for article in articles %}
+                        <option value="{{article.id}}" name="id">{{article.nom}} - {{article.prix}} €</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="Ajouter" class="btn btn-secondary">
+                </form>
+                {% if listArticle is defined %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Intitulé</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Quantité</th>
+                            <th scope="col">Prix HT</th>
+                            <th scope="col" id="total">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for article in listArticle %}
+                        <tr>
+                            <td>{{article.nom}}</td>
+                            <td>{{article.description}}</td>
+                            {% if quantites is defined %}
+                                {% for quantite in quantites %}
+                                    {% if quantite.id == article.id %}
+                                        <td>{{quantite.qty}}</td>
+                                        <td>{{article.prix}} €</td>
+                                        <td>{{article.prix * quantite.qty}} €</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            
+                            
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td for="total">Total HT : <b>{{totalHT}} €</b></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td for="total">Total TTC : <b>{{totalTTC}} €</b></td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                {% endif %}
+
+            </div>
+        </div>
+        <div class="float-right">
+            <a href="{{path('abort_facture', {'id':client.id})}}" class="btn btn-danger">Annuler facture</a><a href="{{path('valid_facture', {'id':client.id})}}" class="btn btn-success ml-3">Valider facture</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.articles').select2();
+    });
+</script>
+{% endblock %}

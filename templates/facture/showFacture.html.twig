@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Facture N°{{id_facture}}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="col-md-12">
+        <div class="jumbotron row">
+            <div class="col-md-6">
+                <a href="{{path('show_client', {'id':client.id})}}" class="btn btn-info">Retour fiche client</a>
+            </div>
+            <div class="col-md-6 text-right">
+                <a href="{{path('pdf_facture', {'id':id_facture})}}" class="btn btn-info">Générer PDF</a>
+            </div>
+            <div class="col-md-12 text-center">
+                <h2>Facture N° {{id_facture}}</h2>
+            </div>
+            <div class="col-md-6">
+                {% if client.societe is not null %}
+                <p>Entreprise : <b>{{client.societe}}</b></p>
+                {% endif %}
+                <p>Client : {{client.nom}} {{client.prenom}}</p>
+                <p>Téléphone : {{client.telephone}}</p>
+            </div>
+            <div class="col-md-6 text-right">
+                {% if client.siret is not null %}
+                <p>SIRET : <b>{{client.siret}}</b></p>
+                {% endif %}
+                <p>Adresse : {{client.adresse}}</p>
+                <p>{{client.codePostal}}, {{client.ville}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                {% if articles is defined %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Intitulé</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Quantité</th>
+                            <th scope="col">Prix HT</th>
+                            <th scope="col" id="total">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for article in articles %}
+                        <tr>
+                            <td>{{article.nom}}</td>
+                            <td>{{article.description}}</td>
+                            {% if quantites is defined %}
+                                {% for quantite in quantites %}
+                                    {% if quantite.id == article.id %}
+                                        <td>{{quantite.qty}}</td>
+                                        <td>{{article.prix}} €</td>
+                                        <td>{{article.prix * quantite.qty}} €</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td for="total">Total HT : <b>{{totalHT}} €</b></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td for="total">Total TTC : <b>{{totalTTC}} €</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

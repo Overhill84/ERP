@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Clients{% endblock %}
+
+{% block body %}
+<style>
+div.test>div>div {
+        margin: auto;
+
+}
+</style>
+<div class="container">
+    <div class="col-md-12">
+        <div id="div_chart" class="test"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">Société</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Téléphone</th>
+                        <th scope="col">Ville</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                    <tr>
+                        <td><b>{{ client.type }}</b></td>
+                        {% if client.societe is defined %}
+                        <td>{{ client.societe }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+                        <td>{{ client.nom }}</td>
+                        <td>{{ client.telephone }}</td>
+                        <td>{{ client.ville }}</td>
+                        <td><a href="{{path('show_client', {'id':client.id})}}" class="btn btn-primary">Détails</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {{ knp_pagination_render(clients) }}
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    {{ gc_draw(pie, 'div_chart') }}
+</script>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Factures{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Facture N°</th>
+                        <th scope="col">Société</th>
+                        <th scope="col">Client</th>
+                        <th scope="col">Total HT</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fac in factures %}
+                    <tr>
+                        <td><b>{{ fac.id }}</b></td>
+                        {% if fac.client.societe is defined %}
+                        <td>{{ fac.client.societe }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+                        <td>{{ fac.client.nom }}</td>
+                        <td>{{ fac.totalHt }} €</td>
+                        <td><a href="{{path('show_facture', {'id':fac.id})}}" class="btn btn-primary">Détails</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {{ knp_pagination_render(factures) }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

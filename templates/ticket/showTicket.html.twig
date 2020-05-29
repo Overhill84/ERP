@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ticket N°{{ticket.id}}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            {% if client is defined %}
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div {% if ticket.etat == 'Ouvert' %} class="card-header text-center alert-success" {% else %}
+                        class="card-header text-center alert-danger" {% endif %}>
+                        <p><b>Nom : </b>{{client.nom}} <b>Prénom : </b>{{client.prenom}}</p>
+                        {% if client.societe is not null %}
+                        <p><b>Société : </b>{{client.societe}}</p>
+                        {% endif %}
+                        <p><b>Email : </b>{{client.mail}}</p>
+                        <p><b>Téléphone : </b>{{client.telephone}}</p>
+                        <p><b>Créé le : </b>{{ticket.createdAt|date("d/m/Y")}} &nbsp;
+                            {% if ticket.closedAt is not null %}
+                            <b>Fermé le : </b>{{ticket.closedAt|date("d/m/Y")}}
+                            {% endif %}</p>
+                    </div>
+                    <div class="card-body text-center">
+                        <p><b>Intitulé : </b>{{ticket.intitule}}</p>
+                        <p><b>Description : </b></p>
+                        <p>{{ticket.description}}</p>
+                        {% if ticket.resolution is not null %}
+                        <p><b>Résolution : </b></p>
+                        <p>{{ticket.resolution}}</p>
+                        {% else %}
+                        <form action="{{path('ticket_close', {'id':ticket.id})}}" class="form-group">
+                            <label for="resolution"><b>Résolution du ticket : </b></label>
+                            <textarea class="form-control" name="resolution" required></textarea>
+                            <button type="submit" class="btn btn-danger mt-3">Fermer le ticket</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Devis{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Devis N°</th>
+                        <th scope="col">Société</th>
+                        <th scope="col">Client</th>
+                        <th scope="col">Total HT</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dev in devis %}
+                    <tr>
+                        <td><b>{{ dev.id }}</b></td>
+                        {% if dev.client.societe is defined %}
+                        <td>{{ dev.client.societe }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+                        <td>{{ dev.client.nom }}</td>
+                        <td>{{ dev.totalHt }} €</td>
+                        <td><a href="{{path('show_devis', {'id':dev.id})}}" class="btn btn-primary">Détails</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {{ knp_pagination_render(devis) }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{article.nom}}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="jumbotron text-center">
+                <div class="col-md-12">
+                    <h3>{{article.nom}}</h3>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6"><b>Type : </b>{{article.type}}</div>
+                    <div class="col-md-6"><b>Description : </b>{{article.description}}</div>
+                    <div class="col-md-12"><b>Prix : </b>{{article.prix}} €</div>
+                    <div class="col-md-12 mt-3">
+                        <a href="" class="btn btn-primary">Modifier</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        {% endblock %}
